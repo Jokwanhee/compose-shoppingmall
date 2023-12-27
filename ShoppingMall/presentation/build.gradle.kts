@@ -67,4 +67,8 @@ dependencies {
     // Navigation
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
+
+    implementation("com.google.accompanist:accompanist-pager:0.23.1")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.23.1")
 }

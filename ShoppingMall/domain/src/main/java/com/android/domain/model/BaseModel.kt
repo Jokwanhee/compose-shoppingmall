@@ -6,5 +6,6 @@ abstract class BaseModel {
 
 enum class ModelType {
     PRODUCT,
-    BANNER
+    BANNER,
+    BANNER_LIST
 }

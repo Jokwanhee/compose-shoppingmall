@@ -1,7 +1,7 @@
 package com.android.data.deserializer
 
-import android.util.Log
 import com.android.domain.model.Banner
+import com.android.domain.model.BannerList
 import com.android.domain.model.BaseModel
 import com.android.domain.model.ModelType
 import com.android.domain.model.Product
@@ -11,6 +11,12 @@ import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import java.lang.reflect.Type
 
+
+/**
+ * 역직렬화 과정에서 List<Person> -> List<Object> 으로 역직렬화함
+ * 이러한 과정을 상태 enum 클래스로 분기처리 해주기 위해서
+ * JsonDeserializer 인터페이스를 상속하는 클래스 생성
+ */
 class BaseModelDeserializer: JsonDeserializer<BaseModel> {
     override fun deserialize(
         json: JsonElement?,
@@ -28,6 +34,9 @@ class BaseModelDeserializer: JsonDeserializer<BaseModel> {
             }
             ModelType.BANNER -> {
                 gson.fromJson(root, Banner::class.java)
+            }
+            ModelType.BANNER_LIST -> {
+                gson.fromJson(root, BannerList::class.java)
             }
         }
     }

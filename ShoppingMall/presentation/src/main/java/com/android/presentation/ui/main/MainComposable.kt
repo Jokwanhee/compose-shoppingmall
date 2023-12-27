@@ -1,28 +1,19 @@
 package com.android.presentation.ui.main
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import com.android.domain.model.Banner
+import com.android.domain.model.BannerList
 import com.android.domain.model.ModelType
 import com.android.domain.model.Product
-import com.android.presentation.R
-import com.android.presentation.ui.common.ProductCard
+import com.android.presentation.ui.component.BannerCard
+import com.android.presentation.ui.component.BannerListCard
+import com.android.presentation.ui.component.ProductCard
 import com.android.presentation.viewmodel.MainViewModel
 
 @Composable
@@ -43,36 +34,18 @@ fun MainInsideScreen(viewModel: MainViewModel) {
                 item is Banner -> BannerCard(model = item)
                 item is Product -> ProductCard(product = item) {
                 }
+
+                item is BannerList -> BannerListCard(model = item)
             }
 
         }
     }
-    Text(text = "Hello Main")
 }
 
 private fun getSpanCountByType(type: ModelType, defaultColumnCount: Int): Int {
-    return when(type) {
+    return when (type) {
         ModelType.PRODUCT -> 1
-        ModelType.BANNER -> defaultColumnCount
+        ModelType.BANNER, ModelType.BANNER_LIST -> defaultColumnCount
     }
 }
 
-@Composable
-fun BannerCard(model: Banner) {
-    Card(
-        shape = RoundedCornerShape(10.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp)
-            .shadow(20.dp)
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_launcher_foreground),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(2f) // width/height => 2f 이면, 2/1 가로:세로 = 2:1 이라는 의미
-        )
-    }
-}
