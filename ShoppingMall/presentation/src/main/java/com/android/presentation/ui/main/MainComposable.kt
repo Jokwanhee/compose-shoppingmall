@@ -60,11 +60,11 @@ private fun getSpanCountByType(type: ModelType, defaultColumnCount: Int): Int {
 @Composable
 fun BannerCard(model: Banner) {
     Card(
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp)
-            .shadow(10.dp)
+            .shadow(20.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_launcher_foreground),
