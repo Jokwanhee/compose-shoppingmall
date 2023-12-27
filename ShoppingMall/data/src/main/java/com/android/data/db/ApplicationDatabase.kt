@@ -2,6 +2,7 @@ package com.android.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.android.data.db.dao.BasketDao
 import com.android.data.db.dao.LikeDao
 import com.android.data.db.dao.PurchaseDao
@@ -19,7 +20,7 @@ import com.android.data.db.entity.PurchaseProductEntity
 )
 abstract class ApplicationDatabase: RoomDatabase() {
     companion object{
-        const val DB_NAME = "applicationDatabase.db"
+        const val DB_NAME = "ApplicationDatabase.db"
     }
 
     abstract fun purchaseDao() : PurchaseDao

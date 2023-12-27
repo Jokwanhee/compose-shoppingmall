@@ -1,6 +1,6 @@
 package com.android.domain.model
 
-sealed class Category(
+open class Category(
     val categoryId: String,
     val categoryName: String
 ) {

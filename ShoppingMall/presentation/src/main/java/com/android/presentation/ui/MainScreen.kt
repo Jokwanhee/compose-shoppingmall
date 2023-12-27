@@ -1,14 +1,12 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.android.presentation
+package com.android.presentation.ui
 
 import android.annotation.SuppressLint
-import android.content.ContentResolver
-import android.net.Uri
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
@@ -26,7 +24,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -34,6 +31,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.android.presentation.ui.main.MainInsideScreen
 import com.android.presentation.ui.theme.ShoppingMallTheme
 import com.android.presentation.viewmodel.MainViewModel
 
@@ -50,7 +48,6 @@ fun GreetingPreview() {
     }
 }
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
     val viewModel = hiltViewModel<MainViewModel>()
@@ -58,9 +55,13 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
     Scaffold(
         topBar = { Header(viewModel) },
-        bottomBar = { MainBottomNavigationBar(navController) }
-    ) {
-        MainNavigationScreen(navController = navController)
+        bottomBar = { MainBottomNavigationBar(navController) },
+    ) { innerPadding ->
+        MainNavigationScreen(
+            mainViewModel = viewModel,
+            navController = navController,
+            innerPadding = innerPadding
+        )
     }
 }
 
@@ -126,10 +127,18 @@ fun MainBottomNavigationBar(
 }
 
 @Composable
-fun MainNavigationScreen(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = Main.route) {
+fun MainNavigationScreen(
+    mainViewModel: MainViewModel,
+    navController: NavHostController,
+    innerPadding: PaddingValues
+) {
+    NavHost(
+        navController = navController,
+        startDestination = Main.route,
+        modifier = Modifier.padding(innerPadding)
+    ) {
         composable(Main.route) {
-            Text(text = "Hello Main")
+            MainInsideScreen(mainViewModel)
         }
         composable(Category.route) {
             Text(text = "Hello Category")

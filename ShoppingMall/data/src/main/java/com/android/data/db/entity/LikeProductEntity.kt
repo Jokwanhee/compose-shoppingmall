@@ -10,6 +10,7 @@ import com.android.domain.model.Product
 import com.android.domain.model.SalesStatus
 import com.android.domain.model.Shop
 
+
 @Entity(tableName = "like")
 @TypeConverters(LikeConverter::class)
 data class LikeProductEntity (
@@ -19,7 +20,6 @@ data class LikeProductEntity (
     val imageUrl: String,
     val price: Price,
     val category: Category,
-    val salesStatus: SalesStatus,
     val shop: Shop,
     val isNew: Boolean,
     val isFreeShipping: Boolean
@@ -31,7 +31,6 @@ fun LikeProductEntity.toDomainModel() : Product {
         imageUrl = imageUrl,
         price = price,
         category = category,
-        salesStatus = salesStatus,
         shop = shop,
         isNew = isNew,
         isFreeShipping = isFreeShipping
