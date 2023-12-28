@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,6 +18,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.android.domain.model.Banner
 import com.android.domain.model.BannerList
 import com.android.presentation.R
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -25,21 +27,21 @@ import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.delay
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun BannerListCard(model: BannerList) {
+fun BannerListCard(model: BannerList, onClick: (BannerList) -> Unit) {
     val pagerState = rememberPagerState()
     LaunchedEffect(key1 = pagerState) {
         autoScrollInfinity(pagerState)
     }
-    Log.e("로그", "${model.imageList.size}")
     HorizontalPager(count = model.imageList.size, state = pagerState) {
         Card(
             shape = RoundedCornerShape(10.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp)
-                .shadow(20.dp)
+                .shadow(20.dp),
+            onClick = { onClick(model) }
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_launcher_foreground),

@@ -9,10 +9,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.android.domain.model.Banner
 import com.android.domain.model.BannerList
+import com.android.domain.model.Carousel
 import com.android.domain.model.ModelType
 import com.android.domain.model.Product
 import com.android.presentation.ui.component.BannerCard
 import com.android.presentation.ui.component.BannerListCard
+import com.android.presentation.ui.component.CarouselCard
 import com.android.presentation.ui.component.ProductCard
 import com.android.presentation.viewmodel.MainViewModel
 
@@ -29,13 +31,19 @@ fun MainInsideScreen(viewModel: MainViewModel) {
             val spanCount = getSpanCountByType(item.type, columnCount)
             GridItemSpan(spanCount)
         }) {
-            val item = modelList[it]
-            when {
-                item is Banner -> BannerCard(model = item)
-                item is Product -> ProductCard(product = item) {
+            when (val item = modelList[it]) {
+                is Banner -> BannerCard(model = item) { model ->
+                    viewModel.openBanner(model)
                 }
-
-                item is BannerList -> BannerListCard(model = item)
+                is BannerList -> BannerListCard(model = item) { model ->
+                    viewModel.openBannerList(model)
+                }
+                is Product -> ProductCard(product = item) { model ->
+                    viewModel.openProduct(model)
+                }
+                is Carousel -> CarouselCard(model = item) { model ->
+                    viewModel.openCarouselProduct(model)
+                }
             }
 
         }
@@ -45,7 +53,7 @@ fun MainInsideScreen(viewModel: MainViewModel) {
 private fun getSpanCountByType(type: ModelType, defaultColumnCount: Int): Int {
     return when (type) {
         ModelType.PRODUCT -> 1
-        ModelType.BANNER, ModelType.BANNER_LIST -> defaultColumnCount
+        ModelType.BANNER, ModelType.BANNER_LIST, ModelType.CAROUSEL -> defaultColumnCount
     }
 }
 
