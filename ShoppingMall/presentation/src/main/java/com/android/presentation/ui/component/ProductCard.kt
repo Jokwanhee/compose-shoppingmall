@@ -78,7 +78,7 @@ fun ProductCard(
 }
 
 @Composable
-private fun Price(product: Product) {
+fun Price(product: Product) {
     when (product.price.salesStatus) {
         SalesStatus.ON_SALE -> {
             Text(
