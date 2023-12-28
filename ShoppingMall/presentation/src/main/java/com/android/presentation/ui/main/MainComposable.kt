@@ -32,10 +32,18 @@ fun MainInsideScreen(viewModel: MainViewModel) {
             GridItemSpan(spanCount)
         }) {
             when (val item = modelList[it]) {
-                is Banner -> BannerCard(model = item)
-                is Product -> ProductCard(product = item) { }
-                is BannerList -> BannerListCard(model = item)
-                is Carousel -> CarouselCard(model = item)
+                is Banner -> BannerCard(model = item) { model ->
+                    viewModel.openBanner(model)
+                }
+                is BannerList -> BannerListCard(model = item) { model ->
+                    viewModel.openBannerList(model)
+                }
+                is Product -> ProductCard(product = item) { model ->
+                    viewModel.openProduct(model)
+                }
+                is Carousel -> CarouselCard(model = item) { model ->
+                    viewModel.openCarouselProduct(model)
+                }
             }
 
         }

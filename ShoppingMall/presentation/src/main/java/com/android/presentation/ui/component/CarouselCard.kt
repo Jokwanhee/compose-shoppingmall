@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,7 +31,7 @@ import com.android.domain.model.Product
 import com.android.presentation.R
 
 @Composable
-fun CarouselCard(model: Carousel) {
+fun CarouselCard(model: Carousel, onClick: (Product) -> Unit) {
     val scrollState = rememberLazyListState()
     Column {
         Text(
@@ -47,14 +48,13 @@ fun CarouselCard(model: Carousel) {
                 .wrapContentHeight()
         ) {
             items(model.productList.size) {
-                CarouselProductCard(product = model.productList[it]) {
-
-                }
+                CarouselProductCard(product = model.productList[it], onClick)
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CarouselProductCard(product: Product, onClick: (Product) -> Unit) {
     Card(
@@ -62,7 +62,8 @@ fun CarouselProductCard(product: Product, onClick: (Product) -> Unit) {
         modifier = Modifier
             .width(150.dp)
             .wrapContentHeight()
-            .padding(10.dp)
+            .padding(10.dp),
+        onClick = { onClick(product) }
     ) {
         Column(
             modifier = Modifier
