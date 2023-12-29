@@ -2,14 +2,10 @@
 
 package com.android.presentation.ui
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,18 +23,21 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.android.presentation.ui.main.MainInsideScreen
+import androidx.navigation.navArgument
+import com.android.domain.model.Category
+import com.android.presentation.ui.category.CategoryScreen
+import com.android.presentation.ui.main.MainCategoryScreen
+import com.android.presentation.ui.main.MainHomeScreen
 import com.android.presentation.ui.theme.ShoppingMallTheme
 import com.android.presentation.viewmodel.MainViewModel
+import com.google.gson.Gson
 
 sealed class MainNavigationItem(var route: String, val icon: ImageVector, val name: String)
-object Main : MainNavigationItem("Main", Icons.Filled.Home, "Main")
-object Category : MainNavigationItem("Category", Icons.Filled.Star, "Category")
-object MyPage : MainNavigationItem("MyPage", Icons.Filled.AccountBox, "MyPage")
 
 @Preview(showBackground = true)
 @Composable
@@ -53,9 +52,16 @@ fun MainScreen(modifier: Modifier = Modifier) {
     val viewModel = hiltViewModel<MainViewModel>()
     val navController = rememberNavController()
 
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
     Scaffold(
         topBar = { Header(viewModel) },
-        bottomBar = { MainBottomNavigationBar(navController) },
+        bottomBar = {
+            if (NavigationItem.MainNav.isMainRoute(currentRoute)) {
+                MainBottomNavigationBar(navController, currentRoute)
+            }
+        },
     ) { innerPadding ->
         MainNavigationScreen(
             mainViewModel = viewModel,
@@ -84,16 +90,19 @@ fun Header(
 
 @Composable
 fun MainBottomNavigationBar(
-    navController: NavHostController
+    navController: NavHostController,
+    currentRoute: String?
 ) {
-    val bottomNavigationItems = listOf(Main, Category, MyPage)
+    val bottomNavigationItems = listOf(
+        NavigationItem.MainNav.Home,
+        NavigationItem.MainNav.Category,
+        NavigationItem.MainNav.MyPage
+    )
 
     NavigationBar(
         containerColor = Color(0xFF000000),
         contentColor = Color(0xFF93FFDD)
     ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
 
         bottomNavigationItems.forEach { item ->
             NavigationBarItem(
@@ -134,17 +143,29 @@ fun MainNavigationScreen(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Main.route,
+        startDestination = NavigationRouteName.MAIN_HOME,
         modifier = Modifier.padding(innerPadding)
     ) {
-        composable(Main.route) {
-            MainInsideScreen(mainViewModel)
+        composable(NavigationRouteName.MAIN_HOME) {
+            MainHomeScreen(mainViewModel)
         }
-        composable(Category.route) {
-            Text(text = "Hello Category")
+        composable(NavigationRouteName.MAIN_CATEGORY) {
+            MainCategoryScreen(mainViewModel, navController)
         }
-        composable(MyPage.route) {
+        composable(NavigationRouteName.MAIN_MYPAGE) {
             Text(text = "Hello MyPage")
+        }
+        composable(
+            NavigationRouteName.CATEGORY + "/{category}",
+            arguments = listOf(navArgument("category") { type = NavType.StringType })
+        ) {
+            val categoryString = it.arguments?.getString("category")
+            val category =
+                Gson().fromJson(categoryString, Category::class.java)
+
+            if (category != null) {
+                CategoryScreen(category = category)
+            }
         }
     }
 }

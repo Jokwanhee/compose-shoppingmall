@@ -3,7 +3,6 @@ package com.android.presentation.ui.main
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -21,7 +20,7 @@ import com.android.presentation.ui.component.RankingCard
 import com.android.presentation.viewmodel.MainViewModel
 
 @Composable
-fun MainInsideScreen(viewModel: MainViewModel) {
+fun MainHomeScreen(viewModel: MainViewModel) {
     val modelList by viewModel.modelList.collectAsState(
         initial = listOf()
     )

@@ -1,7 +1,9 @@
 package com.android.shoppingmall
 
+import com.android.data.repository.CategoryRepositoryImpl
 import com.android.data.repository.MainRepositoryImpl
 import com.android.data.repository.TempRepositoryImpl
+import com.android.domain.repository.CategoryRepository
 import com.android.domain.repository.MainRepository
 import com.android.domain.repository.TempRepository
 import dagger.Binds
@@ -25,4 +27,10 @@ interface DataModule {
     fun bindMainRepository(
         mainRepositoryImpl: MainRepositoryImpl
     ): MainRepository
+
+    @Binds
+    @Singleton
+    fun bindCategoryRepository(
+        categoryRepositoryImpl: CategoryRepositoryImpl
+    ): CategoryRepository
 }
