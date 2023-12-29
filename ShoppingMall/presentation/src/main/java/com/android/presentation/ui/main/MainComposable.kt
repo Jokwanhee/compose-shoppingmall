@@ -12,10 +12,12 @@ import com.android.domain.model.BannerList
 import com.android.domain.model.Carousel
 import com.android.domain.model.ModelType
 import com.android.domain.model.Product
+import com.android.domain.model.Ranking
 import com.android.presentation.ui.component.BannerCard
 import com.android.presentation.ui.component.BannerListCard
 import com.android.presentation.ui.component.CarouselCard
 import com.android.presentation.ui.component.ProductCard
+import com.android.presentation.ui.component.RankingCard
 import com.android.presentation.viewmodel.MainViewModel
 
 @Composable
@@ -35,14 +37,20 @@ fun MainInsideScreen(viewModel: MainViewModel) {
                 is Banner -> BannerCard(model = item) { model ->
                     viewModel.openBanner(model)
                 }
+
                 is BannerList -> BannerListCard(model = item) { model ->
                     viewModel.openBannerList(model)
                 }
+
                 is Product -> ProductCard(product = item) { model ->
                     viewModel.openProduct(model)
                 }
+
                 is Carousel -> CarouselCard(model = item) { model ->
                     viewModel.openCarouselProduct(model)
+                }
+                is Ranking -> RankingCard(model = item) { model ->
+                    viewModel.openRankingProduct(model)
                 }
             }
 
@@ -53,7 +61,7 @@ fun MainInsideScreen(viewModel: MainViewModel) {
 private fun getSpanCountByType(type: ModelType, defaultColumnCount: Int): Int {
     return when (type) {
         ModelType.PRODUCT -> 1
-        ModelType.BANNER, ModelType.BANNER_LIST, ModelType.CAROUSEL -> defaultColumnCount
+        ModelType.BANNER, ModelType.BANNER_LIST, ModelType.CAROUSEL, ModelType.RANKING -> defaultColumnCount
     }
 }
 
