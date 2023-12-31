@@ -29,13 +29,15 @@ import com.android.domain.model.Carousel
 import com.android.domain.model.Price
 import com.android.domain.model.Product
 import com.android.presentation.R
+import com.android.presentation.model.CarouselVM
+import com.android.presentation.model.PresentationVM
 
 @Composable
-fun CarouselCard(model: Carousel, onClick: (Product) -> Unit) {
+fun CarouselCard(presentationVM: CarouselVM) {
     val scrollState = rememberLazyListState()
     Column {
         Text(
-            text = model.title,
+            text = presentationVM.model.title,
             fontSize = 14.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier
@@ -47,8 +49,10 @@ fun CarouselCard(model: Carousel, onClick: (Product) -> Unit) {
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
-            items(model.productList.size) {
-                CarouselProductCard(product = model.productList[it], onClick)
+            items(presentationVM.model.productList.size) {
+                CarouselProductCard(product = presentationVM.model.productList[it]) {
+                    presentationVM.openCarouselProduct(it)
+                }
             }
         }
     }

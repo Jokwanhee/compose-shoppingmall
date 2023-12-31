@@ -1,6 +1,6 @@
 package com.android.domain.model
 
-abstract class BaseModel {
+sealed class BaseModel {
     abstract val type: ModelType
 }
 

@@ -17,8 +17,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.domain.model.Product
-import com.android.domain.model.Ranking
 import com.android.presentation.R
+import com.android.presentation.model.RankingVM
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -27,13 +27,13 @@ private const val DEFAULT_RANKING_ITEM_COUNT = 3
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun RankingCard(model: Ranking, onClick: (Product) -> Unit) {
+fun RankingCard(presentationVM: RankingVM) {
     val pagerState = rememberPagerState()
-    val pageCount = model.productList.size / DEFAULT_RANKING_ITEM_COUNT
+    val pageCount = presentationVM.model.productList.size / DEFAULT_RANKING_ITEM_COUNT
 
     Column {
         Text(
-            text = model.title,
+            text = presentationVM.model.title,
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(10.dp, 0.dp, 0.dp, 0.dp)
@@ -44,16 +44,16 @@ fun RankingCard(model: Ranking, onClick: (Product) -> Unit) {
             contentPadding = PaddingValues(0.dp, 0.dp, 50.dp, 0.dp)
         ) { index ->
             Column {
-                RankingProductCard(index * 3, model.productList[index * 3], onClick)
-                RankingProductCard(index * 3 + 1, model.productList[index * 3 + 1], onClick)
-                RankingProductCard(index * 3 + 2, model.productList[index * 3 + 2], onClick)
+                RankingProductCard(index * 3, presentationVM.model.productList[index * 3])
+                RankingProductCard(index * 3 + 1, presentationVM.model.productList[index * 3 + 1])
+                RankingProductCard(index * 3 + 2, presentationVM.model.productList[index * 3 + 2])
             }
         }
     }
 }
 
 @Composable
-fun RankingProductCard(index: Int, product: Product, onClick: (Product) -> Unit) {
+fun RankingProductCard(index: Int, product: Product) {
     Row(
         modifier = Modifier
             .padding(10.dp)
