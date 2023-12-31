@@ -15,17 +15,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.android.domain.model.Banner
 import com.android.presentation.R
+import com.android.presentation.model.BannerVM
+import com.android.presentation.model.PresentationVM
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BannerCard(model: Banner, onClick: (Banner) -> Unit) {
+fun BannerCard(presentationVM: BannerVM) {
     Card(
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp)
             .shadow(20.dp),
-        onClick = { onClick(model) }
+        onClick = { presentationVM.openBanner(presentationVM.model.bannerId) }
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_launcher_foreground),

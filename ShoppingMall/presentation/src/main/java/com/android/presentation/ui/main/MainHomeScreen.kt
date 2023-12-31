@@ -12,6 +12,11 @@ import com.android.domain.model.Carousel
 import com.android.domain.model.ModelType
 import com.android.domain.model.Product
 import com.android.domain.model.Ranking
+import com.android.presentation.model.BannerListVM
+import com.android.presentation.model.BannerVM
+import com.android.presentation.model.CarouselVM
+import com.android.presentation.model.ProductVM
+import com.android.presentation.model.RankingVM
 import com.android.presentation.ui.component.BannerCard
 import com.android.presentation.ui.component.BannerListCard
 import com.android.presentation.ui.component.CarouselCard
@@ -29,30 +34,16 @@ fun MainHomeScreen(viewModel: MainViewModel) {
     LazyVerticalGrid(columns = GridCells.Fixed(columnCount)) {
         items(modelList.size, span = { index ->
             val item = modelList[index]
-            val spanCount = getSpanCountByType(item.type, columnCount)
+            val spanCount = getSpanCountByType(item.model.type, columnCount)
             GridItemSpan(spanCount)
         }) {
             when (val item = modelList[it]) {
-                is Banner -> BannerCard(model = item) { model ->
-                    viewModel.openBanner(model)
-                }
-
-                is BannerList -> BannerListCard(model = item) { model ->
-                    viewModel.openBannerList(model)
-                }
-
-                is Product -> ProductCard(product = item) { model ->
-                    viewModel.openProduct(model)
-                }
-
-                is Carousel -> CarouselCard(model = item) { model ->
-                    viewModel.openCarouselProduct(model)
-                }
-                is Ranking -> RankingCard(model = item) { model ->
-                    viewModel.openRankingProduct(model)
-                }
+                is BannerVM -> BannerCard(presentationVM = item)
+                is BannerListVM -> BannerListCard(presentationVM = item)
+                is ProductVM -> ProductCard(presentationVM = item)
+                is CarouselVM -> CarouselCard(presentationVM = item)
+                is RankingVM -> RankingCard(presentationVM = item)
             }
-
         }
     }
 }
