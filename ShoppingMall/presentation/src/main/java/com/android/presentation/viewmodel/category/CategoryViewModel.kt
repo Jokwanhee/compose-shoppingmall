@@ -1,6 +1,7 @@
 package com.android.presentation.viewmodel.category
 
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavHostController
 import com.android.domain.model.Banner
 import com.android.domain.model.BannerList
 import com.android.domain.model.Carousel
@@ -14,6 +15,8 @@ import com.android.presentation.model.BannerVM
 import com.android.presentation.model.CarouselVM
 import com.android.presentation.model.ProductVM
 import com.android.presentation.model.RankingVM
+import com.android.presentation.ui.NavigationRouteName
+import com.android.presentation.utils.NavigationUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,8 +37,8 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
-    override fun openProduct(product: Product) {
-
+    override fun openProduct(navHostController: NavHostController, product: Product) {
+        NavigationUtils.navigate(navHostController, NavigationRouteName.PRODUCT_DETAIL)
     }
 
     private fun convertToPresentationVM(list: List<Product>): List<ProductVM> {
