@@ -5,6 +5,10 @@ plugins {
     id("com.google.dagger.hilt.android")
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
 android {
     namespace = "com.android.shoppingmall"
     compileSdk = 34
@@ -31,13 +35,13 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
+//    compileOptions {
+//        sourceCompatibility = JavaVersion.VERSION_17
+//        targetCompatibility = JavaVersion.VERSION_17
+//    }
+//    kotlinOptions {
+//        jvmTarget = "17"
+//    }
     buildFeatures {
         compose = true
     }
