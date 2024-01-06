@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Parcelable
 import androidx.navigation.NavHostController
 import com.android.domain.model.Category
+import com.android.domain.model.Product
 import com.google.gson.Gson
 
 object NavigationUtils {
@@ -23,6 +24,9 @@ object NavigationUtils {
                 }
                 is Category -> {
                     argument = String.format("/%s", Uri.parse(Gson().toJson(args)))
+                }
+                is Product -> {
+                    argument = String.format("/%s", args.productId)
                 }
             }
         }

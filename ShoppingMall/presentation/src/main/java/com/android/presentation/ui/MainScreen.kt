@@ -30,6 +30,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.android.domain.model.Category
+import com.android.domain.model.Product
+import com.android.presentation.product_detail.ProductDetailScreen
 import com.android.presentation.ui.category.CategoryScreen
 import com.android.presentation.ui.main.MainCategoryScreen
 import com.android.presentation.ui.main.MainHomeScreen
@@ -147,7 +149,7 @@ fun MainNavigationScreen(
         modifier = Modifier.padding(innerPadding)
     ) {
         composable(NavigationRouteName.MAIN_HOME) {
-            MainHomeScreen(mainViewModel)
+            MainHomeScreen(navController, mainViewModel)
         }
         composable(NavigationRouteName.MAIN_CATEGORY) {
             MainCategoryScreen(mainViewModel, navController)
@@ -164,7 +166,17 @@ fun MainNavigationScreen(
                 Gson().fromJson(categoryString, Category::class.java)
 
             if (category != null) {
-                CategoryScreen(category = category)
+                CategoryScreen(navHostController = navController, category = category)
+            }
+        }
+        composable(
+            NavigationRouteName.PRODUCT_DETAIL + "/{product}",
+            arguments = listOf(navArgument("product") { type = NavType.StringType })
+        ) {
+            val productString = it.arguments?.getString("product")
+
+            if (productString != null) {
+                ProductDetailScreen(productString)
             }
         }
     }
